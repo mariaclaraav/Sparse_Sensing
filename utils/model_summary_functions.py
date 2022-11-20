@@ -9,6 +9,7 @@ from sklearn.metrics import mean_squared_error, f1_score, accuracy_score, mean_a
 from sklearn.ensemble import RandomForestRegressor, AdaBoostRegressor, GradientBoostingRegressor, ExtraTreesRegressor
 from yellowbrick.model_selection import feature_importances
 import xgboost as xgb
+from sklearn.linear_model import ElasticNet
 import eli5
 from tqdm import tqdm
 from eli5.sklearn import PermutationImportance
@@ -97,16 +98,16 @@ def feature_importance(X_train,y_train,X_test,y_test,relative=True,topn=8):
   
     ################################################################
     
-    mod = GradientBoostingRegressor(random_state=0)
+    mod = ElasticNet(alpha=0.001, l1_ratio=0.2)
     mod.fit(X_train,y_train)
     r2 = r2_score(y_test,mod.predict(X_test))
     
-    gbr = GradientBoostingRegressor(random_state=0)
+    gbr = ElasticNet(alpha=0.001, l1_ratio=0.2)
     viz4 = FeatureImportances(gbr,relative=relative, topn=topn, title ='GradientBoostingRegressor',ax=ax[1,1])
     viz4.fit(X_train,y_train)
     ax[1,1].tick_params(labelsize=13)
     ax[1,1].set_xlabel('Relative feature importance',fontsize=16)
-    ax[1,1].set_title('GradientBoostingRegressor - R^2 = {}'.format(r2),fontsize=20)
+    ax[1,1].set_title('ElasticNet - R^2 = {}'.format(r2),fontsize=20)
 
     plt.tight_layout()
     plt.show()
@@ -128,8 +129,7 @@ class multivariate_importance():
         mod3 = AdaBoostRegressor(random_state=0)
         mod4 = GradientBoostingRegressor(random_state=0)
         mod5 = ExtraTreesRegressor(random_state=0, n_jobs=-1)
-        mod6 = xgb.XGBRegressor(
-            seed=123, gpu_id=0, tree_method='gpu_hist', random_state=0, n_jobs=-1)
+        mod6 = ElasticNet()
 
         self.mod_list = [mod1, mod2,
                          mod3, mod4,
@@ -209,7 +209,7 @@ class multivariate_importance():
             ax[1, 1].set_title(
                 'ExtraTreesRegressor - $R^2$ = {}'.format(self.model_r2[4]), fontsize=22)
             ax[1, 2].set_title(
-                'XGBoost - $R^2$ = {}'.format(self.model_r2[5]), fontsize=22)
+                'ElasticNet - $R^2$ = {}'.format(self.model_r2[5]), fontsize=22)
 
             ax[0, 0].set_xlabel('Coefficient value', fontsize=22)
             ax[0, 1].set_xlabel('Coefficient value', fontsize=22)
