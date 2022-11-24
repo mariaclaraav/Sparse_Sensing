@@ -53,7 +53,7 @@ def metrics(y_test,predict):
     return print("MSE:{}".format(mse),"\nMAE:{}".format(mae),"\nR2:{}".format(r2))
 
 
-def feature_importance(X_train,y_train,X_test,y_test,relative=True,topn=10):
+def feature_importance(X_train,y_train,X_test,y_test,relative=True,topn=X_train.shape[1]):
     
     fig, ax = plt.subplots(nrows=2, ncols=2, figsize=(18, 10),sharex=True)
     plt.rc('legend',fontsize=12.5) 
