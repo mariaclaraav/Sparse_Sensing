@@ -53,7 +53,7 @@ def metrics(y_test,predict):
     return print("MSE:{}".format(mse),"\nMAE:{}".format(mae),"\nR2:{}".format(r2))
 
 
-def feature_importance(X_train,y_train,X_test,y_test,relative=True,topn=X_train.shape[1]):
+def feature_importance(X_train,y_train,X_test,y_test,relative=True,topn=9):
     
     fig, ax = plt.subplots(nrows=2, ncols=2, figsize=(18, 10),sharex=True)
     plt.rc('legend',fontsize=12.5) 
@@ -161,7 +161,7 @@ class multivariate_importance():
             self.X_train, self.y_train)
         return eli5.show_weights(perm, feature_names=X_train.columns.tolist())
 
-    def plot(self, relative=True, topn=10, absolute=True, plot_R2=True):
+    def plot(self, relative=True, topn=9, absolute=True, plot_R2=True):
 
         fig, ax = plt.subplots(nrows=2, ncols=3, figsize=(30, 18))
 
